@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>;',lj,kjhghjklkjh
-        <form action="jsp/entrer">
+        <form action="jsp/entrer">nkljioh
             Entrer votre nom: <input type="text" name="nom">
             <input type="submit" value="Valider">
         </form>
