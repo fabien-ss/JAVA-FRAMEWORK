@@ -20,7 +20,7 @@ import java.util.List;
 public class Utile {
     
     public static HashMap<String, Mapping> getAllHashMap(String packageName) throws ClassNotFoundException, UnsupportedEncodingException, IOException {
-        System.out.println("io");
+        
         HashMap<String, Mapping> hash = new HashMap<>();
      
         List<Class<?>> classes = obtenirClasses(packageName);
@@ -28,7 +28,6 @@ public class Utile {
             System.out.println("Class: " + cls.getName());
             Method[] methods = cls.getDeclaredMethods();
             for (Method method : methods) {
-               //System.out.println("Method: " + method.getName());
                if(method.getDeclaredAnnotation(MyAnnotation.class)!=null){
                     MyAnnotation annotation = method.getDeclaredAnnotation(MyAnnotation.class);
                     if(annotation.url() != ""){
