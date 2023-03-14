@@ -8,12 +8,15 @@ package etu2004.framework.servlet;
 import etu2004.framework.Mapping;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import utils.Utile;
 
 /**
  *
@@ -21,23 +24,29 @@ import java.util.HashMap;
  */
 public class FrontServlet extends HttpServlet {
 
-    HashMap<String, Mapping> MappingUrls;
+    HashMap<String, etu2004.framework.Mapping> MappingUrls = new HashMap<>();
+   
+    @Override
+    public void init() throws ServletException {
+        try {
+            setMappingUrls(Utile.getAllHashMap("objet"));
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FrontServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
+             Mapping m = new Mapping("Emp", "getAll");
             out.println("<h1>Servlet FrontServlet at " + request.getContextPath() + "</h1>");
-            out.println("URL = "+request.getRequestURI());
-            out.println("</body>");
-            out.println("</html>");
+            out.println("URL = "+request.getRequestURI()+"<br>");            
+            out.println("Methode "+MappingUrls.get(request.getRequestURI()).getMethod()+"<br>");
+            out.println("Classe "+MappingUrls.get(request.getRequestURI()).getClassName());
         }
     }
 
@@ -80,4 +89,12 @@ public class FrontServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public HashMap<String, Mapping> getMappingUrls() {
+        return MappingUrls;
+    }
+
+    public void setMappingUrls(HashMap<String, Mapping> MappingUrls) {
+        this.MappingUrls = MappingUrls;
+    }
+    
 }

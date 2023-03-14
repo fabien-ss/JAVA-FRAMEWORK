@@ -5,7 +5,12 @@
         <group>
             <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/src/java/etu2004/framework/servlet/FrontServlet.java</file>
             <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/web/WEB-INF/web.xml</file>
+            <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/config.xml</file>
+            <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/src/java/config.xml</file>
             <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/src/java/etu2004/framework/Mapping.java</file>
+            <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/src/java/utils/MyAnnotation.java</file>
+            <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/src/java/PackageExplorer.java</file>
+            <file>file:/D:/ITUNIVERSITY/S4/Framework/Framework4/Framework/src/java/objet/Emp.java</file>
         </group>
     </open-files>
 </project-private>
