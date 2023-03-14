@@ -10,9 +10,18 @@ package etu2004.framework;
  * @author KM
  */
 public class Mapping {
+    
     String className;
     String method;
+    
+    public Mapping(String className, String method){
+        this.setClassName(className);
+        this.setMethod(method);
+    }
 
+    public Mapping(){
+    
+    }
     public String getClassName() {
         return className;
     }
@@ -28,5 +37,4 @@ public class Mapping {
     public void setMethod(String method) {
         this.method = method;
     }
-    
 }
