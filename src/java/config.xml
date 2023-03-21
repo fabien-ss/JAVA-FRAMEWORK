@@ -7,8 +7,15 @@ and open the template in the editor.
 
 
 <root>
+    <database>
+        <username>koto</username>
+        <password>mot de passe</password>
+        <url></url>
+    </database>
+    <utils>
+        <package-name>objet</package-name>
+    </utils>
     <mapping>
         <url>/Framework/jsp/get_all</url>
-       
     </mapping>
 </root>
