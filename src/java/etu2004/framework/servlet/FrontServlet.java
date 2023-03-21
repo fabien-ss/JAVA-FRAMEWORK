@@ -16,6 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import utils.Utile;
 
 /**
@@ -29,12 +36,16 @@ public class FrontServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            setMappingUrls(Utile.getAllHashMap("objet"));
+            setMappingUrls(Utile.getAllHashMap());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
             Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -44,11 +55,11 @@ public class FrontServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
              Mapping m = new Mapping("Emp", "getAll");
             out.println("<h1>Servlet FrontServlet at " + request.getContextPath() + "</h1>");
-            out.println("URL = "+request.getRequestURI()+"<br>");            
+            out.println("URLd = "+request.getRequestURI()+"<br>");            
             out.println("Methode "+MappingUrls.get(request.getRequestURI()).getMethod()+"<br>");
-            out.println("Classe "+MappingUrls.get(request.getRequestURI()).getClassName());
-        }
-    }
+            out.println("Classsfdfdse "+MappingUrls.get(request.getRequestURI()).getClassName());
+           
+        }    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
