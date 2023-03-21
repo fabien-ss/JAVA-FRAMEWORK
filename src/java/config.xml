@@ -10,7 +10,7 @@ and open the template in the editor.
     <database>
         <username>koto</username>
         <password>mot de passe</password>
-        <url></url>
+        <url>k</url>
     </database>
     <utils>
         <package-name>objet</package-name>
