@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
 -->
 
 
+
 <root>
-    <database>
-        <username>koto</username>
-        <password>mot de passe</password>
-        <url>k</url>
-    </database>
-    <utils>
-        <package-name>objet</package-name>
-    </utils>
-    <mapping>
-        <url>/Framework/jsp/get_all</url>
-    </mapping>
+    
 </root>
+

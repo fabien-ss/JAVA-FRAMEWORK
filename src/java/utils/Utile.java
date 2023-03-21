@@ -3,12 +3,6 @@ import etu2004.framework.Mapping;
 
 import java.lang.reflect.*;
 import java.util.*;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -26,15 +20,8 @@ import org.xml.sax.SAXException;
  */
 public class Utile {
     
-    public static HashMap<String, Mapping> getAllHashMap() throws ClassNotFoundException, UnsupportedEncodingException, IOException, SAXException, ParserConfigurationException {
+    public static HashMap<String, Mapping> getAllHashMap(String packageName) throws ClassNotFoundException, UnsupportedEncodingException, IOException, SAXException, ParserConfigurationException {
        
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse("./config.xml");
-        NodeList nodeList = document.getElementsByTagName("packe");
-        Element element = (Element) nodeList.item(0);
-        String packageName = element.getElementsByTagName("package-listening").item(0).getTextContent();
-        System.out.println((new File("config.xml")).getAbsoluteFile());
         HashMap<String, Mapping> hash = new HashMap<>();
      
         List<Class<?>> classes = obtenirClasses(packageName);
@@ -42,7 +29,6 @@ public class Utile {
             System.out.println("Class: " + cls.getName());
             Method[] methods = cls.getDeclaredMethods();
             for (Method method : methods) {
-               //System.out.println("Method: " + method.getName());
                if(method.getDeclaredAnnotation(MyAnnotation.class)!=null){
                     MyAnnotation annotation = method.getDeclaredAnnotation(MyAnnotation.class);
                     if(!"".equals(annotation.url())){
@@ -82,22 +68,23 @@ public class Utile {
         return classes;
     } 
     public static void main(String argv[]) throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException {
-     //   DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+  
+        //   DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
        //Utile.getAllHashMap();
 //            
 //            // Affichage de l'URL
 //            System.out.println("URL de la base de données : " + url);
-        System.out.println(Utile.getAllHashMap());
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        
-        File f = new File("config.xml");
-        Document document = builder.parse(f);
-        System.out.println(f.getAbsoluteFile());
-        NodeList nodeList = document.getElementsByTagName("packe");
-        Element element = (Element) nodeList.item(0);
-        String packageName = element.getElementsByTagName("package-listening").item(0).getTextContent();
-           System.out.println(packageName);
+//        System.out.println(Utile.getAllHashMap());
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = factory.newDocumentBuilder();
+//        
+//        File f = new File("config.xml");
+//        Document document = builder.parse(f);
+//        System.out.println(f.getAbsoluteFile());
+//        NodeList nodeList = document.getElementsByTagName("packe");
+//        Element element = (Element) nodeList.item(0);
+//        String packageName = element.getElementsByTagName("package-listening").item(0).getTextContent();
+//           System.out.println(packageName);
     }
 }
 
