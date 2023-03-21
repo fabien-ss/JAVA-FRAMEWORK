@@ -6,6 +6,7 @@
 package etu2004.framework.servlet;
 
 import etu2004.framework.Mapping;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -36,7 +37,18 @@ public class FrontServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            setMappingUrls(Utile.getAllHashMap());
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            String path = getServletContext().getRealPath("/WEB-INF/config.xml");
+            File configFile = new File(path);
+            Document document = builder.parse(configFile);
+            NodeList nodeList = document.getElementsByTagName("packe");
+            Element element = (Element) nodeList.item(0);
+            String packageName = element.getElementsByTagName("package-listening").item(0).getTextContent();
+
+            setMappingUrls(Utile.getAllHashMap(packageName));
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
@@ -81,7 +93,7 @@ public class FrontServlet extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
+     * @throws ServletExcception if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
