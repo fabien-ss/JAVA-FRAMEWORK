@@ -82,8 +82,8 @@ public class FrontServlet extends HttpServlet {
             out.println(((ModelView) retour).getView());
             try{
                 out.println(((ModelView) retour).getView());
-//                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
-//                requestDispatcher.forward(request,response);
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
+                requestDispatcher.forward(request,response);
             }
             catch(Exception e){
                 throw new Exception("Your servlet doesn't match any function");
