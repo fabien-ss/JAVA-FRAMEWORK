@@ -1,6 +1,8 @@
-cd Framework/build/web/WEB-INF/classes
-jar -cf files.jar  .
-mv files.jar  ../../../../../Test-framework/WEB-INF/lib/
-cd ../../../../../Test-framework
-jar -cf Framework3.war  .
-mv Framework3.war /home/fabien/Documents/apache-tomcat-9.0.72/webapps/
+cd Source
+javac -cp lib/* -d . *java
+jar -cf files.jar .
+cd ../Test-framework
+cp ../Source/files.jar  ./WEB-INF/lib/
+
+jar -cf Framework9.war .
+cp Framework9.war /home/fabien/Documents/apache-tomcat-9.0.72/webapps/

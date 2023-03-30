@@ -8,9 +8,14 @@
     <servlet>
         <servlet-name>FrontServlet</servlet-name>
         <servlet-class>etu2004.framework.servlet.FrontServlet</servlet-class>
+        <init-param>
+            <param-name>package_name</param-name>
+            <param-value>objet</param-value>
+        </init-param>
     </servlet>
-    <servlet-mapping>
-  <servlet-name>FrontServlet</servlet-name>
-  <url-pattern>/servlet/*</url-pattern>
-</servlet-mapping>
+ 
+   <servlet-mapping>
+        <servlet-name>FrontServlet</servlet-name>
+        <url-pattern>/servlet/*</url-pattern>
+    </servlet-mapping>
 </web-app>
