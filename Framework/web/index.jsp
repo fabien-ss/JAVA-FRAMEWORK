@@ -16,9 +16,9 @@
             Entrer votre nom: <input type="text" name="nom">
             <input type="submit" value="Valider">
         </form>
-        <a href="servlet/add-emp">Ajouter emp</a>
-        <a href="servlet/get-emp">Afficher emp</a>
-        <a href="servlet/demarrer">Demarrer voiture</a>
-        <a href="servlet/get-voiture">Voiture</a
+        <a href="add-emp">Ajouter emp</a>
+        <a href="get-emp">Afficher emp</a>
+        <a href="demarrer">Demarrer voiture</a>
+        <a href="get-voiture">Voiture</a
     </body>
 </html>

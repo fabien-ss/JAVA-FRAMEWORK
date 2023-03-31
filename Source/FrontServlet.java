@@ -7,7 +7,6 @@ package etu2004.framework.servlet;
 
 import javax.servlet.RequestDispatcher;
 import etu2004.framework.Mapping;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -20,12 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import utils.ModelView;
 import utils.Utile;
@@ -55,7 +49,8 @@ public class FrontServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.print(request.getRequestURI());
             String[] ms = request.getRequestURI().split("/");
-            String nomMethode = ms[3];
+            String nomMethode = ms[2];
+            
             
             String packageName = getInitParameter("package_name");
             

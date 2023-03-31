@@ -49,7 +49,8 @@ public class FrontServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.print(request.getRequestURI());
             String[] ms = request.getRequestURI().split("/");
-            String nomMethode = ms[3];
+            String nomMethode = ms[2];
+            
             
             String packageName = getInitParameter("package_name");
             
