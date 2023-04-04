@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author fabien
+ * @author KM
  */
 public class Utile {
     
