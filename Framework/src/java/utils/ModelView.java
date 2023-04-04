@@ -6,7 +6,7 @@ package utils;
 
 /**
  *
- * @author fabien
+ * @author KM
  */
 
 public class ModelView {
@@ -20,5 +20,4 @@ public class ModelView {
     public String getView() {
         return View;
     }
-    
 }
