@@ -4,6 +4,8 @@
  */
 package utils;
 
+import java.util.HashMap;
+
 /**
  *
  * @author KM
@@ -12,7 +14,19 @@ package utils;
 public class ModelView {
     
     String View = "liste.jsp";
+    HashMap<String, Object> data = new HashMap<>();
 
+    public void addItem(String key, Object data){
+        this.getData().put(key, data);
+    }
+    public void setData(HashMap<String, Object> data) {
+        this.data = data;
+    }
+    
+    public HashMap<String, Object> getData() {
+        return data;
+    }
+    
     public void setView(String View) {
         this.View = View;
     }

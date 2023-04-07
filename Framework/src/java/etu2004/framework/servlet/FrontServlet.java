@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -61,12 +62,18 @@ public class FrontServlet extends HttpServlet {
             Method methode = objet.getClass().getDeclaredMethod(method);
             Object retour = (ModelView) methode.invoke(objet);
             out.println(((ModelView) retour).getView());
+            
             try{
-                out.println(((ModelView) retour).getView());
+                ModelView m = (ModelView) retour;
+                String key = null;
+                for (Map.Entry<String, Object> entry : m.getData().entrySet()) {
+                    key = (String) entry.getKey();
+                }
+                request.setAttribute((String) key, m.getData().get(key));
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
                 requestDispatcher.forward(request,response);
             }
-            catch(Exception e){
+            catch(IOException | ServletException e){
                 throw new Exception("Your servlet doesn't match any function");
             }
         }    
