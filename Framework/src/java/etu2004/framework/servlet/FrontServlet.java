@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +63,15 @@ public class FrontServlet extends HttpServlet {
             Method methode = objet.getClass().getDeclaredMethod(method);
             Object retour = (ModelView) methode.invoke(objet);
             out.println(((ModelView) retour).getView());
+            
+//            Enumeration<String> paramNames = request.getParameterNames();
+//            while (paramNames.hasMoreElements()) {
+//              String paramName = paramNames.nextElement();
+//              String[] paramValues = request.getParameterValues(paramName);
+//              for (String paramValue : paramValues) {
+//                out.println("Param name: " + paramName + " - Value: " + paramValue);
+//              }
+//            }
             
             try{
                 ModelView m = (ModelView) retour;
