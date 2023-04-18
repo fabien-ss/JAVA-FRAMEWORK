@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="servlet//entrer">
+        <form action="add-emp" method="post">
             Entrer votre nom: <input type="text" name="nom">
             <input type="submit" value="Valider">
         </form>

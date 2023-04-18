@@ -1,17 +1,21 @@
-<%-- 
-    Document   : liste
-    Created on : Mar 22, 2023, 10:41:47 AM
-    Author     : KM
---%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList" contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+    ArrayList<String> message = (ArrayList<String>) request.getAttribute("liste");
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        
     </head>
     <body>
-        <h1>Sprint 5!</h1>
+        <% for(String m : message) { %>
+            <em><%=m%></em>
+        <% } %>
+        tert
     </body>
 </html>
