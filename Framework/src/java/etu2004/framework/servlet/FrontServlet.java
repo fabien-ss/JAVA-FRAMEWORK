@@ -63,14 +63,12 @@ public class FrontServlet extends HttpServlet {
             if(paramNames.hasMoreElements()){
                 methode = objet.getClass().getDeclaredMethod(method, HashMap.class);
                 HashMap<String, String> parametres = new HashMap<>();
-                out.print("hello");
                 while (paramNames.hasMoreElements()) {
-                  String paramName = paramNames.nextElement();
-                  String[] paramValues = request.getParameterValues(paramName);
-                  for (String paramValue : paramValues) {
-                    out.println("Param name: " + paramName + " - Value: " + paramValue);
-                    parametres.put(paramName, paramValue);
-                  }
+                    String paramName = paramNames.nextElement();
+                    String[] paramValues = request.getParameterValues(paramName);
+                    for (String paramValue : paramValues) {
+                        parametres.put(paramName, paramValue);
+                    }
                 }
                 retour = (ModelView) methode.invoke(objet, parametres);
             }
@@ -90,7 +88,6 @@ public class FrontServlet extends HttpServlet {
                 requestDispatcher.forward(request,response);
             }
             catch(IOException | ServletException e){
-                //throw new Exception("Your servlet doesn't match any function");
                 out.print(e.getMessage());
             }
         }    
