@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import utilitaire.ModelView;
+import utilitaire.MyAnnotation;
 import utilitaire.Utile;
 
 /**
@@ -48,49 +50,107 @@ public class FrontServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, SAXException, ParserConfigurationException, Exception {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            Enumeration<String> paramNames = request.getParameterNames();
-            String[] ms = request.getRequestURI().split("/");
-            String nomMethode = ms[2];
-            String packageName = getInitParameter("package_name");
-            String nomDeClasse = packageName+"."+(String) MappingUrls.get(nomMethode).getClassName();
-            java.lang.Class cl = java.lang.Class.forName(nomDeClasse);
-            Object objet = cl.newInstance();           
-            String method = (String) MappingUrls.get(nomMethode).getMethod();
-            Method methode;
-            Object retour = new Object();
+        PrintWriter out = response.getWriter();
+        try{
+               
+        Enumeration<String> paramNames = request.getParameterNames();
+
+        String uri = request.getRequestURI();
+        
+        out.print(uri);
+
+        String context = request.getContextPath();
+
+        String nomMethode = uri.substring(context.length()+1);
+
+        String packageName = getInitParameter("package_name");
+        
+        out.println(packageName);
+
+        for (Map.Entry<String, Mapping> entry : MappingUrls.entrySet()) {
+            Object key = entry.getKey();
+            Object val = entry.getValue();
+            out.println(key+"  "+val);
             
-            if(paramNames.hasMoreElements()){
-                methode = objet.getClass().getDeclaredMethod(method, HashMap.class);
-                HashMap<String, String> parametres = new HashMap<>();
-                while (paramNames.hasMoreElements()) {
-                    String paramName = paramNames.nextElement();
-                    String[] paramValues = request.getParameterValues(paramName);
-                    for (String paramValue : paramValues) {
-                        parametres.put(paramName, paramValue);
-                    }
-                }
-                retour = (ModelView) methode.invoke(objet, parametres);
+        }
+        
+        String nomDeClasse = packageName+"."+(String) MappingUrls.get(nomMethode).getClassName();
+        
+        out.println(nomDeClasse);
+
+        java.lang.Class cl = java.lang.Class.forName(nomDeClasse);
+
+        Object objet = cl.newInstance();           
+
+        String method = (String) MappingUrls.get(nomMethode).getMethod();
+
+        Method methode = null;//= objet.getClass().getDeclaredMethod(method);
+
+        Method[] methodes = objet.getClass().getDeclaredMethods();
+        for(Method m : methodes){
+            out.println(m);
+            if(m.getName().contains(method)){
+                methode = m;
             }
-            else if(!paramNames.hasMoreElements()){
-                methode = objet.getClass().getDeclaredMethod(method);
+        }
+
+        Object retour = new Object();
+
+        if(paramNames.hasMoreElements()){
+
+            java.lang.Class[] paramtypesclasses = methode.getParameterTypes();
+
+            HashMap<String, String> parametres = new HashMap<>();
+            
+            while (paramNames.hasMoreElements()) {
+                String paramName = paramNames.nextElement();
+                String[] paramValues = request.getParameterValues(paramName);
+                for (String paramValue : paramValues) {
+                    out.println("<br>");
+                    out.println(paramValue);
+                    parametres.put(paramName, paramValue);
+                }
+            }
+
+            objet = utilitaire.Utile.buildObject(cl, parametres);
+            out.println("tena misy exe^tion");
+
+            // fonction mandray HashMap fonction ane fonction
+
+            if(paramtypesclasses.length == 0){
+                out.println("non eh");
                 retour = (ModelView) methode.invoke(objet);
             }
- 
-            try{
-                ModelView m = (ModelView) retour;
-                String key = null;
-                for (Map.Entry<String, Object> entry : m.getData().entrySet()) {
-                    key = (String) entry.getKey();
-                }
+
+            if(paramtypesclasses.length > 0){ 
+            
+                retour = Utile.setMethodsParameters(parametres, methode, objet);
+            }
+
+        }
+        else if(!paramNames.hasMoreElements()){
+            retour = (ModelView) methode.invoke(objet);
+        }
+
+        try{
+            ModelView m = (ModelView) retour;
+            String key = null;
+            for (Map.Entry<String, Object> entry : m.getData().entrySet()) {
+                key = (String) entry.getKey();
                 request.setAttribute((String) key, m.getData().get(key));
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
-                requestDispatcher.forward(request,response);
             }
-            catch(IOException | ServletException e){
-                out.print(e.getMessage());
-            }
+
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
+            requestDispatcher.forward(request,response);
+        }
+        catch(IOException | ServletException e){
+            out.print(e.getMessage());
         }    
+        }
+        catch(Exception e){
+            out.println(e.fillInStackTrace());
+            out.println(e.getLocalizedMessage());
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

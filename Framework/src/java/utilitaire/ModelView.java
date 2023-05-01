@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class ModelView {
     
-    String View = "liste.jsp";
+    String View = "index.jsp";
     HashMap<String, Object> data = new HashMap<>();
 
     public void addItem(String key, Object data){

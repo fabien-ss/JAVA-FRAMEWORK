@@ -5,9 +5,6 @@
             30
         </session-timeout>
     </session-config>
-    <display-name>
-        fabien
-    </display-name>
     <servlet>
         <servlet-name>FrontServlet</servlet-name>
         <servlet-class>etu2004.framework.servlet.FrontServlet</servlet-class>
@@ -16,8 +13,7 @@
             <param-value>objet</param-value>
         </init-param>
     </servlet>
-
-
+ 
    <servlet-mapping>
         <servlet-name>FrontServlet</servlet-name>
         <url-pattern>/</url-pattern>

@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : index
     Created on : 3 mars 2023, 08:42:02
     Author     : KM
@@ -9,16 +9,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Sprint 8</title>
     </head>
     <body>
-        <form action="servlet//entrer">
-            Entrer votre nom: <input type="text" name="nom">
+        <a href="User_Guide/novice.jsp">Tutoriel</a>
+        <form action="add-emp" method="post">
+            Entrer votre nom: <input type="text" name="nom" value="u">
+            <br>
+            Prenom <input type="text" name="prenom" value="u">
+            <br><!-- comment -->
+            Numero <input type="number" name="numero" value=111>
             <input type="submit" value="Valider">
         </form>
         <a href="add-emp">Ajouter emp</a>
         <a href="get-emp">Afficher emp</a>
         <a href="demarrer">Demarrer voiture</a>
-        <a href="get-voiture">Voiture</a>
+        <a href="get-voiture">Voiture</a
     </body>
 </html>
