@@ -12,7 +12,7 @@
         <title>Sprint 8</title>
     </head>
     <body>
-        <a href="User_Guide/novice.jsp">Tutoriel</a>
+        <a href="User_Guide/user_guide.jsp">Tutoriel</a>
         <form action="add-emp" method="post">
             Entrer votre nom: <input type="text" name="nom" value="u">
             <br>
@@ -23,7 +23,6 @@
         </form>
         <a href="add-emp">Ajouter emp</a>
         <a href="get-emp">Afficher emp</a>
-        <a href="demarrer">Demarrer voiture</a>
-        <a href="get-voiture">Voiture</a
+        <a href="login.jsp">Log in</a>
     </body>
 </html>
