@@ -22,6 +22,7 @@ public class Emp {
         listes.add("Juiliem");
         listes.add("Joseph");
     }
+    
     @MyAnnotation(url="get-emp")
     public ModelView getAll(){
         ModelView m = new ModelView();
