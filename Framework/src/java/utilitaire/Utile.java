@@ -49,6 +49,7 @@ public class Utile {
         
         return retour;
     }    
+    
     public static Object convertToPrimitive(Object value, Class<?> type) {
         if (type.equals(byte.class)) {
             return Byte.valueOf(value.toString());
