@@ -17,9 +17,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <td><%=emp.getNom()%></td>
-        <td><%=emp.getPrenom()%></td>
-        <td><%=emp.getNumero()%></td>
+        <p>Nom <%=emp.getNom()%></p>
+        <p>Prenom <%=emp.getPrenom()%></p>
+        <p>Numero</p>
     </body>
 </html>
