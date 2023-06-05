@@ -6,6 +6,7 @@
 package objet;
 
 import java.util.ArrayList;
+import utilitaire.FileUpload;
 import utilitaire.ModelView;
 import utilitaire.MyAnnotation;
 
@@ -15,7 +16,17 @@ public final class Emp {
     String nom;
     String prenom;
     int numero;
+    FileUpload photo;
+
+    public FileUpload getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(FileUpload photo) {
+        this.photo = photo;
+    }
     
+//e
     public void setId(int id) {
         this.id = id;
     }
@@ -50,7 +61,6 @@ public final class Emp {
     
     public Emp(){
     }
-
     public Emp(int id, String nom, String prenom, int numero){
         this.setId(id);
         this.setNom(nom);

@@ -6,37 +6,104 @@
 package objet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import utilitaire.FileUpload;
 import utilitaire.ModelView;
 import utilitaire.MyAnnotation;
 
-/**
- *
- * @author KM
- */
-
-public class Emp {
-    ArrayList<String> listes = new ArrayList<>();
+public final class Emp {
     
-    public Emp(){
-        listes.add("Juiliem");
-        listes.add("Joseph");
+    int id;
+    String nom;
+    String prenom;
+    int numero;
+    FileUpload photo;
+
+    public FileUpload getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(FileUpload photo) {
+        this.photo = photo;
     }
     
-    @MyAnnotation(url="get-emp")
+//e
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+    
+    public Emp(){
+    }
+    public Emp(int id, String nom, String prenom, int numero){
+        this.setId(id);
+        this.setNom(nom);
+        this.setPrenom(prenom);
+        this.setNumero(numero);
+    }
+    
+    @MyAnnotation(url="get-emp", ParametersNames = {})
     public ModelView getAll(){
+        ArrayList<Emp> emps = new ArrayList<>();
+        emps.add(new Emp(1, "Koto", "Jean", 032));
+        emps.add(new Emp(2, "Jean", "Koto balida", 002));
+        
         ModelView m = new ModelView();
         m.setView("liste.jsp");
-        m.addItem("liste",listes);
+        m.addItem("liste",emps);
         return m;
     }
     
-    @MyAnnotation(url="add-emp")
-    public ModelView insert(HashMap<String, String> donnees){
-        listes.add(donnees.get("nom"));
+    @MyAnnotation(url="add-emp", ParametersNames = {})
+    public ModelView insert(){
         ModelView m = new ModelView();
-        m.setView("liste.jsp");
-        m.addItem("liste", listes);
+        m.setView("emp.jsp");
+        m.addItem("emp", this);
+        return m;
+    }
+    
+    @MyAnnotation(url="find-emp" , ParametersNames = { "id" })
+    public ModelView findById(int id){
+        
+        ModelView m = new ModelView();
+        m.setView("empsdetails.jsp");
+        
+        ArrayList<Emp> emps = new ArrayList<>();
+        emps.add(new Emp(1, "Koto", "Jean", 032));
+        emps.add(new Emp(2, "Jean", "Koto balida", 002));
+        
+        for(Emp e : emps){
+            if(e.getId() == id) {
+                m.addItem("emp", e);
+                return m;
+            }
+        }
         return m;
     }
 }
