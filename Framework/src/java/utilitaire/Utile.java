@@ -24,34 +24,58 @@ import org.xml.sax.SAXException;
 public class Utile {
      // fonction mandray HashMap fonction anle fonction
     
-    public static Object setMethodsParameters(HashMap<String, String> parametre, Method methode, Object objet) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static Object setMethodsParameters(HashMap<String, Object[]> parametres, Method methode, Object objet) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
         Object retour;
         
         Parameter[] parametresfonction = methode.getParameters();
         Object[] values = new Object[parametresfonction.length];
-        
+
         MyAnnotation annotation = methode.getDeclaredAnnotation(MyAnnotation.class);
-        String[] parametersclasses = annotation.ParametersNames();
-        
-        for (Map.Entry<String, String> entry : parametre.entrySet()) {
+        String[] parametersclasses = annotation.ParametersNames(); //maka anaran'ireo parametre anle fonction
+
+        for (Map.Entry<String, Object[]> entry : parametres.entrySet()) { //pour chaque clé / clé 
             String key = entry.getKey();
             for(int i = 0; i < parametersclasses.length; i++){
+                
                 if(parametersclasses[i].equals(key)){
-                    values[i] = Utile.convertToPrimitive(parametre.get(key), parametresfonction[i].getType());
-                    i += 1;
+
+                    Object[] params = parametres.get(key);
+
+                    if(params.length == 1){
+                        values[i] = Utile.convertToPrimitive(params[0], parametresfonction[i].getType());
+                        i += 1;
+                    }
+
+                    else if(params.length > 1){
+                        int[] array_object_to_set = new int[params.length];
+                        int j = 0;
+                        for(Object p : params){
+                            System.out.println("p: "+p);
+                            array_object_to_set[j] = Integer.parseInt((String) p);//Utile.convertToPrimitive(p, int.class);
+                            j += 1;
+                        }
+                        values[i] = array_object_to_set;
+                        i += 1;
+                    }
+
                 }
             }
         }
-        
+
         //retour = methode.invoke(objet, values)
-        
+
         retour = methode.invoke(objet, values);
-        
+                   
         return retour;
     }    
-    
     public static Object convertToPrimitive(Object value, Class<?> type) {
-        if (type.equals(byte.class)) {
+        if(type.equals(int[].class)){
+            int[] new_int = new int[1];
+            new_int[0] = Integer.parseInt((String) value);
+            return new_int;
+        }
+        else if (type.equals(byte.class)) {
             return Byte.valueOf(value.toString());
         } else if (type.equals(short.class)) {
             return Short.valueOf(value.toString());
@@ -79,44 +103,63 @@ public class Utile {
         return "set"+variable_name.replaceFirst(premierelettre, majuscule);
     }
     
-    public static Object buildObject(java.lang.Class classe, HashMap<String, String> parametres) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, ParseException{
+    public static boolean contains(String word, String[] words){
+        for(String s : words){
+            if(s.equals(word)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static Object buildObject(java.lang.Class classe, HashMap<String, Object[]> parametres) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, ParseException{
         Object nouvelle_instance = classe.newInstance();
-        for (Map.Entry<String, String> entry : parametres.entrySet()) {
+        Field[] fields = nouvelle_instance.getClass().getDeclaredFields();
+        
+        String[] field_name = new String[fields.length];
+        int i = 0;
+        for(Field f : fields){
+            field_name[i] = f.getName();
+            i += 1;
+        }
+        for (Map.Entry<String, Object[]> entry : parametres.entrySet()) {
             
-                String key = entry.getKey();
-                String value = entry.getValue();
-                String setter = setters(key);
-                
-                var field = nouvelle_instance.getClass().getDeclaredField(key);
-                
-                Class field_type = field.getType();
-                
-                Method m = nouvelle_instance.getClass().getDeclaredMethod(setter, field_type);
-                
-                value = value.trim();
-                
-                Object converted_value;
-                if(field_type.isPrimitive()) {
-                    converted_value = Utile.convertToPrimitive(value, field_type);
-                } 
-                else if(field_type.equals(String.class)) {
-                    converted_value = value;
-                } 
-                else if (field_type.equals(Date.class)) {
-                try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date parsedDate = dateFormat.parse(value);
-                    converted_value = new java.sql.Date(parsedDate.getTime());
-                } catch (ParseException e) {
-                    throw new IllegalArgumentException("Impossible de convertir la valeur en Date : " + value);
+            String key = entry.getKey();
+            if(contains(key, field_name)){
+                Object[] values = entry.getValue();
+                for (Object value : values) {
+                    
+                    String setter = setters(key);
+                    var field = nouvelle_instance.getClass().getDeclaredField(key);
+                    Class field_type = field.getType();
+                    Method m = nouvelle_instance.getClass().getDeclaredMethod(setter, field_type);
+
+                    Object converted_value;
+                    if(field_type.isPrimitive()) {
+                        converted_value = Utile.convertToPrimitive((String) value, field_type);
+                    } 
+                    else if(field_type.equals(FileUpload.class)){
+                        converted_value = value;
+                    }
+                    else if(field_type.equals(String.class)) {
+                        converted_value = value;
+                    } 
+                    else if (field_type.equals(Date.class)) {
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date parsedDate = dateFormat.parse((String) value);
+                        converted_value = new java.sql.Date(parsedDate.getTime());
+                    } catch (ParseException e) {
+                        throw new IllegalArgumentException("Impossible de convertir la valeur en Date : " + value);
+                    }
+                    } else if (field_type.equals(LocalDate.class)) {
+                        converted_value = LocalDate.parse((String)value);
+                    } 
+                    else {
+                        converted_value = field_type.cast((String)value);
+                    }
+                    m.invoke(nouvelle_instance, converted_value);
                 }
-                } else if (field_type.equals(LocalDate.class)) {
-                    converted_value = LocalDate.parse(value);
-                } 
-                else {
-                    converted_value = field_type.cast(value);
-                }
-                m.invoke(nouvelle_instance, converted_value);
+            }
         }
         return nouvelle_instance;
     }
@@ -169,7 +212,7 @@ public class Utile {
         return classes;
     }  
     public static void main(String argv[]) throws Exception {
-        
+     
     }
 }
 

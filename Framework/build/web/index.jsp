@@ -12,15 +12,15 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="add-emp" method="post">
+        <form action="add-emp" method="post" enctype="multipart/form-data">
             Entrer votre nom: <input type="text" name="nom" value="u">
             <br>
             Prenom <input type="text" name="prenom" value="u">
             <br><!-- comment -->
             Numero <input type="number" name="numero" value=111>
+            <input type="file" name="photo">
             <input type="submit" value="Valider">
         </form>
-        <a href="add-emp">Ajouter emp</a>
         <a href="get-emp">Afficher emp</a>
         <a href="demarrer">Demarrer voiture</a>
         <a href="get-voiture">Voiture</a
