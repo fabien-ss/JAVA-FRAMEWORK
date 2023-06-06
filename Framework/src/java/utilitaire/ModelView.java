@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author KM
+ * @author fabien
  */
 
 public class ModelView {
