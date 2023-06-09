@@ -5,11 +5,13 @@
         <group>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/web/WEB-INF/web.xml</file>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/src/java/utilitaire/ModelView.java</file>
+            <file>file:/home/fabien/Documents/GitHub/Framework/Framework/web/emp.jsp</file>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/src/java/utilitaire/MyAnnotation.java</file>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/src/java/utilitaire/Utile.java</file>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/src/java/objet/Emp.java</file>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/web/index.jsp</file>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/src/java/etu2004/framework/servlet/FrontServlet.java</file>
+            <file>file:/home/fabien/Documents/GitHub/Framework/Framework/web/META-INF/context.xml</file>
             <file>file:/home/fabien/Documents/GitHub/Framework/Framework/src/java/utilitaire/FileUpload.java</file>
         </group>
     </open-files>
