@@ -18,6 +18,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+         <td><%=emp.getNombredappel()%></td>
         <td><%=emp.getNom()%></td>
         <td><%=emp.getPrenom()%></td>
         <td><%=emp.getNumero()%></td>

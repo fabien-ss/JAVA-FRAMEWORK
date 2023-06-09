@@ -17,7 +17,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <%=emp.getNom()%>
+        <%=emp.getNombredappel()%>
         <%=emp.getPrenom()%> <br>
         Photo name <%=emp.getPhoto().getName()%><br>
         Byte <%=emp.getPhoto().getBytes()%>

@@ -25,6 +25,58 @@ import org.xml.sax.SAXException;
  * @author fabien
  */
 public class Utile {
+//fonction default setter
+    public static Object getDefaultValues(Field objet){
+        if(objet.getType().isPrimitive()){
+            if (objet.getType() == int.class) {
+                return 0;
+            } else if (objet.getType() == short.class) {
+                return (short) 0;
+            } else if (objet.getType() == long.class) {
+                return 0L;
+            } else if (objet.getType() == float.class) {
+                return 0.0f;
+            } else if (objet.getType() == double.class) {
+                return 0.0;
+            } else if (objet.getType() == byte.class) {
+                return (byte) 0;
+            } else if (objet.getType() == char.class) {
+                return '\u0000';
+            } else if (objet.getType() == boolean.class) {
+                return false;
+            } else if (objet.getType() == float.class) {
+                return 0.0f;
+            } else if (objet.getType() == double.class) {
+                return 0.0;
+            } else if (objet.getType() == byte.class) {
+                return (byte) 0;
+            } else if (objet.getType() == char.class) {
+                return '\u0000';
+            } else if (objet.getType() == boolean.class) {
+                return false;
+            }
+            else if (objet.getType() == String.class) {
+                return "";
+            }
+        }
+        return null;
+    }
+//fonction pour reset attribut
+    public static void resetAttributeToDefault(Object objet) throws Exception{
+        Field[] fields = objet.getClass().getDeclaredFields();
+        for(Field f : fields){
+            if(!f.getName().equals("nombredappel")){
+                String setter = Utile.setters(f.getName());
+                Method method = objet.getClass().getDeclaredMethod(setter, f.getType());
+                method.invoke(objet, Utile.getDefaultValues(f));
+            }
+            if(f.getName().equals("nombredappel")){
+                Method getterMethode = objet.getClass().getDeclaredMethod("getNombredappel");
+                Method method = objet.getClass().getDeclaredMethod("setNombredappel", int.class);
+                method.invoke(objet, ((int)getterMethode.invoke(objet)) + 1);
+            }
+        }
+    }
 //fonction pour traiter les requête du type normal
     public static Object request_traitor(Object objet, Object retour, HttpServletRequest request, Method methode, Class cl) throws Exception{
         Enumeration<String> paramNames = request.getParameterNames();
@@ -36,7 +88,7 @@ public class Utile {
                 Object[] paramValues = request.getParameterValues(paramName);
                 parametres.put(paramName, paramValues);
             }
-            objet = utilitaire.Utile.buildObject(cl, parametres);
+            objet = utilitaire.Utile.buildObject(objet, parametres);
             if(paramtypesclasses.length == 0){
                 retour = (ModelView) methode.invoke(objet);
             }
@@ -75,7 +127,7 @@ public class Utile {
                     parametres.put(fileName, fichiers);
                 }
             }
-            objet = utilitaire.Utile.buildObject(cl, parametres);
+            objet = utilitaire.Utile.buildObject(objet, parametres);
             if(paramtypesclasses.length == 0) retour = (ModelView) methode.invoke(objet);
             if(paramtypesclasses.length > 0) retour = Utile.setMethodsParameters(parametres, methode, objet);   
         }
@@ -161,8 +213,8 @@ public class Utile {
         return false;
     }
 //ici instanciation de l'objet avec attribution des attributs ces derniers correspondent à ceux du formulaire
-    public static Object buildObject(java.lang.Class classe, HashMap<String, Object[]> parametres) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, ParseException{
-        Object nouvelle_instance = classe.newInstance();
+    public static Object buildObject(Object nouvelle_instance, HashMap<String, Object[]> parametres) throws Exception{
+       // Object nouvelle_instance = objet;
         Field[] fields = nouvelle_instance.getClass().getDeclaredFields();
         String[] field_name = new String[fields.length];
         int i = 0;
@@ -170,6 +222,8 @@ public class Utile {
             field_name[i] = f.getName();
             i += 1;
         }
+        Utile.resetAttributeToDefault(nouvelle_instance);
+        
         for (Map.Entry<String, Object[]> entry : parametres.entrySet()) {
             String key = entry.getKey();
             if(contains(key, field_name)){
@@ -231,6 +285,20 @@ public class Utile {
         }
         return hash;
     }
+//fonction ahafahana mahazo ireo classe segleton rehetra anaty HashMap<String, Object>
+    public static HashMap<String, Object> getAllSengletonClasses(String packageName) throws ClassNotFoundException, UnsupportedEncodingException, IOException, SAXException, ParserConfigurationException, InstantiationException, IllegalAccessException {
+        HashMap<String, Object> hash = new HashMap<>();
+        List<Class<?>> classes = obtenirClasses(packageName);
+        for (Class cls : classes) {
+            MyAnnotation singleton_annotation = (MyAnnotation) cls.getDeclaredAnnotation(MyAnnotation.class);
+            if(singleton_annotation.isSegleton()){
+                //Object objet = cls.newInstance();
+                hash.put(cls.getCanonicalName(), null);
+            }
+        }
+        return hash;
+    }
+    
 //fonction pour obtenir toutes les classes d'un package donné
     public static List<Class<?>> obtenirClasses(String packageName) throws ClassNotFoundException, IOException {
         List<Class<?>> classes = new ArrayList<>();

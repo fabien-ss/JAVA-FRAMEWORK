@@ -21,9 +21,6 @@
             <input type="file" name="photo">
             <input type="submit" value="Valider">
         </form>
-        <a href="add-emp">Ajouter emp</a>
         <a href="get-emp">Afficher emp</a>
-        <a href="demarrer">Demarrer voiture</a>
-        <a href="get-voiture">Voiture</a
     </body>
 </html>

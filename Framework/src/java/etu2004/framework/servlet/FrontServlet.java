@@ -8,7 +8,6 @@ package etu2004.framework.servlet;
 import etu2004.framework.Mapping;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.servlet.ServletException;
@@ -35,17 +34,16 @@ import utilitaire.Utile;
 @MultipartConfig(location = "./")
 public class FrontServlet extends HttpServlet {
 
-    HashMap<String, etu2004.framework.Mapping> MappingUrls = new HashMap<>();
-    HashMap<String, Object> instance_list = new HashMap<>();
+    HashMap<String, etu2004.framework.Mapping> MappingUrls;
+    HashMap<String, Object> instance_list;
    
     @Override
     public void init() throws ServletException {
         try {      
             String packageName = getInitParameter("package_name");
             setMappingUrls(Utile.getAllHashMap(packageName));
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException | SAXException | ParserConfigurationException | ClassNotFoundException ex) {
+            setInstance_list(Utile.getAllSengletonClasses(packageName));
+        } catch (Exception ex) {
             Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -62,7 +60,17 @@ public class FrontServlet extends HttpServlet {
         String nomDeClasse = packageName+"."+(String) MappingUrls.get(nomMethode).getClassName();
         java.lang.Class cl = java.lang.Class.forName(nomDeClasse);
         
-        Object objet = cl.newInstance(); // nouvelle instance de la classe
+        Object objet = instance_list.get(nomDeClasse);
+        
+        if(objet == null){
+            objet = cl.newInstance();
+            instance_list.put(nomDeClasse, objet);
+        }
+        
+        /*if(objet instanceof Emp) {
+                ((Emp) objet).setNombredappel(((Emp)objet).getNombredappel(){ + 1);   
+            }*/
+          //  Object objet = cl.newInstance(); // nouvelle instance de la classe
         
         String method = (String) MappingUrls.get(nomMethode).getMethod();
         Method methode = null;
@@ -82,7 +90,6 @@ public class FrontServlet extends HttpServlet {
         
         else if(contentType == null) retour = Utile.request_traitor(objet, retour, request, methode, cl); //sinon
        
-
         try{
             ModelView m = (ModelView) retour;
             String key = "";
@@ -93,9 +100,10 @@ public class FrontServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
             requestDispatcher.forward(request,response);
         }
-        catch(IOException | ServletException e){
+        catch(Exception e){
             out.println(e.fillInStackTrace());
             out.print(e.getClass());
+            out.println(e.getLocalizedMessage());
         }    
     }
 
@@ -155,8 +163,15 @@ public class FrontServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
 
+    public HashMap<String, Object> getInstance_list() {
+        return instance_list;
+    }
+
+    public void setInstance_list(HashMap<String, Object> instance_list) {
+        this.instance_list = instance_list;
+    }
+    
     public HashMap<String, Mapping> getMappingUrls() {
         return MappingUrls;
     }

@@ -10,8 +10,16 @@ import utilitaire.FileUpload;
 import utilitaire.ModelView;
 import utilitaire.MyAnnotation;
 
+@MyAnnotation(isSegleton = true)
 public final class Emp {
     
+    int nombredappel = 0;
+    public void setNombredappel(int i){
+        this.nombredappel = i;
+    }
+    public int getNombredappel(){
+        return this.nombredappel;
+    }
     int id;
     String nom;
     String prenom;
