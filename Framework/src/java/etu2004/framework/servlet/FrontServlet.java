@@ -24,6 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import utilitaire.ModelView;
+import utilitaire.MyAnnotation;
 import utilitaire.Utile;
 
 /**
@@ -64,7 +65,10 @@ public class FrontServlet extends HttpServlet {
         
         if(objet == null){
             objet = cl.newInstance();
-            instance_list.put(nomDeClasse, objet);
+            MyAnnotation annotation = (MyAnnotation) cl.getDeclaredAnnotation(MyAnnotation.class);
+            if(annotation.isSegleton()){
+                instance_list.put(nomDeClasse, objet);
+            }
         }
         
         /*if(objet instanceof Emp) {
