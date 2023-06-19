@@ -75,7 +75,15 @@ public final class Emp {
         this.setPrenom(prenom);
         this.setNumero(numero);
     }
-    
+    @MyAnnotation(url="login", ParametersNames = {})
+    public ModelView login(){
+        ModelView m = new ModelView();
+        m.addSession("isConnected", this);
+        m.addSession("profil", this.getPrenom());
+        m.setView("index.jsp");
+        m.addItem("profi", this);
+        return m;
+    }
     @MyAnnotation(url="get-emp", ParametersNames = {})
     public ModelView getAll(){
         ArrayList<Emp> emps = new ArrayList<>();
@@ -96,9 +104,8 @@ public final class Emp {
         return m;
     }
     
-    @MyAnnotation(url="find-emp" , ParametersNames = { "id" })
+    @MyAnnotation(url="find-emp" , ParametersNames = { "id" }, aunth = "admin")
     public ModelView findById(int id){
-        
         ModelView m = new ModelView();
         m.setView("empsdetails.jsp");
         

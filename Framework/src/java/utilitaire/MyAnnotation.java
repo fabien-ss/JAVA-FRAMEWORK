@@ -16,5 +16,6 @@ import java.lang.annotation.*;
 public @interface MyAnnotation {
     public boolean isSegleton() default false;
     public String url() default"";
+    public String aunth() default "";
     public String[] ParametersNames() default {}; 
 }

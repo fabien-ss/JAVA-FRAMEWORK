@@ -1,6 +1,9 @@
-chemin_webapps="/home/fabien/Documents/apache-tomcat-9.0.72/webapps"
+chemin_webapps="/home/fabien/Documents/apache-tomcat-9.0.76/webapps"
+chemin_bin="/home/fabien/Documents/apache-tomcat-9.0.76/bin"
+framework_dir="/home/fabien/Documents/GitHub/Framework"
 package_name="objet"
 webxml_path="Test-framework/WEB-INF/web.xml"
+
 
 echo "Création du répertoire temporaire"
 mkdir temp
@@ -31,3 +34,8 @@ echo "Suppression du répertoire temporaire"
 mv etu2004Framework.war $chemin_webapps
 cd ..
 rm -r temp
+cd $chemin_bin
+./shutdown.sh
+./startup.sh
+
+cd $framework_dir

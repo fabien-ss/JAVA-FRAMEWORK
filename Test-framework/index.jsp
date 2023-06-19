@@ -22,5 +22,6 @@
             <input type="submit" value="Valider">
         </form>
         <a href="get-emp">Afficher emp</a>
+        <a href="login.jsp">Login</a>
     </body>
 </html>

@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import utilitaire.ModelView;
@@ -54,6 +55,8 @@ public class FrontServlet extends HttpServlet {
         
         PrintWriter out = response.getWriter();
         
+        HttpSession session = request.getSession();
+        
         String uri = request.getRequestURI();
         String context = request.getContextPath();
         String nomMethode = uri.substring(context.length()+1);
@@ -71,11 +74,6 @@ public class FrontServlet extends HttpServlet {
             }
         }
         
-        /*if(objet instanceof Emp) {
-                ((Emp) objet).setNombredappel(((Emp)objet).getNombredappel(){ + 1);   
-            }*/
-          //  Object objet = cl.newInstance(); // nouvelle instance de la classe
-        
         String method = (String) MappingUrls.get(nomMethode).getMethod();
         Method methode = null;
         Method[] methodes = objet.getClass().getDeclaredMethods();
@@ -89,6 +87,22 @@ public class FrontServlet extends HttpServlet {
         Object retour = new Object(); //instance à l'objet servant de modelview 
         
         String contentType = request.getContentType(); //obtient le type de la requête
+        
+        String sessionName = getInitParameter("session_name");
+        String profilName = getInitParameter("profil_name");
+        
+        if(methode.getDeclaredAnnotation(MyAnnotation.class) != null){
+            if(methode.getDeclaredAnnotation(MyAnnotation.class).aunth() != ""){
+                MyAnnotation authn = methode.getDeclaredAnnotation(MyAnnotation.class);
+                String profile = authn.aunth();// session.getAttribute(uri)
+                
+                if(profile.equals("admin")){
+                    if(!profile.equals(session.getAttribute(getInitParameter("profil_name"))) ){
+                       throw new Exception("Can't acces "+methode.getName());
+                    }
+                }
+            }
+        }
           
         if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode, cl); //si c'est du type 'multipart/form-data'
         
@@ -97,6 +111,12 @@ public class FrontServlet extends HttpServlet {
         try{
             ModelView m = (ModelView) retour;
             String key = "";
+            
+            if(m.getSessions().size() > 0){
+                session.setAttribute(sessionName, m.getSessions().get(sessionName));
+                session.setAttribute(profilName, m.getSessions().get(profilName));
+            }
+            
             for (Map.Entry<String, Object> entry : m.getData().entrySet()) {
                 key = (String) entry.getKey();
                 request.setAttribute((String) key, m.getData().get(key));

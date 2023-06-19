@@ -22,7 +22,6 @@
             <input type="submit" value="Valider">
         </form>
         <a href="get-emp">Afficher emp</a>
-        <a href="demarrer">Demarrer voiture</a>
-        <a href="get-voiture">Voiture</a
+        <a href="login.jsp">Login</a
     </body>
 </html>

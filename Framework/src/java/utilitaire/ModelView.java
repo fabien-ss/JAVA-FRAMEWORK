@@ -16,6 +16,19 @@ public class ModelView {
     
     String View = "index.jsp";
     HashMap<String, Object> data = new HashMap<>();
+    HashMap<String, Object> sessions = new HashMap<>();
+
+    public void addSession(String key, Object value){
+        this.getSessions().put(key, value);
+    }
+    
+    public HashMap<String, Object> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(HashMap<String, Object> sessions) {
+        this.sessions = sessions;
+    }
 
     public void addItem(String key, Object data) {
         this.getData().put(key, data);
