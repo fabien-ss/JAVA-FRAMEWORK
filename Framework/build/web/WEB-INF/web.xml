@@ -12,6 +12,14 @@
             <param-name>package_name</param-name>
             <param-value>objet</param-value>
         </init-param>
+        <init-param>
+            <param-name>session_name</param-name>
+            <param-value>isConnected</param-value>
+        </init-param>
+        <init-param>
+            <param-name>profil_name</param-name>
+            <param-value>profil</param-value>
+        </init-param>
     </servlet>
  
    <servlet-mapping>

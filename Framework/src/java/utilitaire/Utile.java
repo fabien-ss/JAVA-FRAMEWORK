@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -25,6 +26,21 @@ import org.xml.sax.SAXException;
  * @author fabien
  */
 public class Utile {
+//fonction checkAutorisation
+    public static void checkAuthorisation(Method methode, HttpSession session, String profileName)throws Exception{
+        if(methode.getDeclaredAnnotation(MyAnnotation.class) != null){
+            if(!"".equals(methode.getDeclaredAnnotation(MyAnnotation.class).aunth())){
+                MyAnnotation authn = methode.getDeclaredAnnotation(MyAnnotation.class);
+                String profile = authn.aunth();// session.getAttribute(uri)
+
+                if(profile.equals("admin")){
+                    if(!profile.equals(session.getAttribute(profileName)) ){
+                       throw new Exception("Can't acces "+methode.getName());
+                    }
+                }
+            }
+        }
+    }
 //fonction default setter
     public static Object getDefaultValues(Field objet){
         if(objet.getType().isPrimitive()){
@@ -78,7 +94,7 @@ public class Utile {
         }
     }
 //fonction pour traiter les requête du type normal
-    public static Object request_traitor(Object objet, Object retour, HttpServletRequest request, Method methode, Class cl) throws Exception{
+    public static Object request_traitor(Object objet, Object retour, HttpServletRequest request, Method methode) throws Exception{
         Enumeration<String> paramNames = request.getParameterNames();
         if(paramNames.hasMoreElements()){
             java.lang.Class[] paramtypesclasses = methode.getParameterTypes();
@@ -102,7 +118,7 @@ public class Utile {
         return retour;
     }
 //fonction pour traiter ceux avec multipart/form-data
-    public static Object request_multipart_traitor(Object objet, Object retour, HttpServletRequest request, Method methode, Class cl) throws Exception{
+    public static Object request_multipart_traitor(Object objet, Object retour, HttpServletRequest request, Method methode) throws Exception{
         Collection<Part> parts = request.getParts();
         if(!parts.isEmpty()){
             java.lang.Class[] paramtypesclasses = methode.getParameterTypes();
