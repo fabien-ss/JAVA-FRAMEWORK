@@ -7,7 +7,7 @@ package etu2004.framework;
 //tsy misy package
 /**
  *
- * @author KM
+ * @author fabien
  */
 public class Mapping {
     

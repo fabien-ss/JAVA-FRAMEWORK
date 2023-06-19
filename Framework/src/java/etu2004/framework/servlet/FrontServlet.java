@@ -56,7 +56,7 @@ public class FrontServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         HttpSession session = request.getSession();
-        
+
         String uri = request.getRequestURI();
         String context = request.getContextPath();
         String nomMethode = uri.substring(context.length()+1);
@@ -81,6 +81,7 @@ public class FrontServlet extends HttpServlet {
         for(Method m : methodes){
             if(m.getName().contains(method)){
                 methode = m;
+                break;
             }
         }
         
@@ -91,32 +92,18 @@ public class FrontServlet extends HttpServlet {
         String sessionName = getInitParameter("session_name");
         String profilName = getInitParameter("profil_name");
         
-        if(methode.getDeclaredAnnotation(MyAnnotation.class) != null){
-            if(methode.getDeclaredAnnotation(MyAnnotation.class).aunth() != ""){
-                MyAnnotation authn = methode.getDeclaredAnnotation(MyAnnotation.class);
-                String profile = authn.aunth();// session.getAttribute(uri)
-                
-                if(profile.equals("admin")){
-                    if(!profile.equals(session.getAttribute(getInitParameter("profil_name"))) ){
-                       throw new Exception("Can't acces "+methode.getName());
-                    }
-                }
-            }
-        }
+        Utile.checkAuthorisation(methode, session, profilName);
           
-        if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode, cl); //si c'est du type 'multipart/form-data'
-        
-        else if(contentType == null) retour = Utile.request_traitor(objet, retour, request, methode, cl); //sinon
+        if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode); //si c'est du type 'multipart/form-data'
+        else if(contentType == null) retour = Utile.request_traitor(objet, retour, request, methode); //sinon
        
         try{
             ModelView m = (ModelView) retour;
             String key = "";
-            
             if(m.getSessions().size() > 0){
                 session.setAttribute(sessionName, m.getSessions().get(sessionName));
                 session.setAttribute(profilName, m.getSessions().get(profilName));
             }
-            
             for (Map.Entry<String, Object> entry : m.getData().entrySet()) {
                 key = (String) entry.getKey();
                 request.setAttribute((String) key, m.getData().get(key));
@@ -131,15 +118,6 @@ public class FrontServlet extends HttpServlet {
         }    
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
