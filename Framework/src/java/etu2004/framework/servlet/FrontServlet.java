@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import utilitaire.ModelView;
 import utilitaire.MyAnnotation;
+import utilitaire.Session;
 import utilitaire.Utile;
 
 /**
@@ -93,7 +95,10 @@ public class FrontServlet extends HttpServlet {
         String profilName = getInitParameter("profil_name");
         
         Utile.checkAuthorisation(methode, session, profilName);
-          
+        
+        //maka ny donnée anaty session pour une méthode contenant l'annotaion session, izany hoe méthode mila session
+        Utile.setUserDataSession(objet, methode, request);
+        
         if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode); //si c'est du type 'multipart/form-data'
         else if(contentType == null) retour = Utile.request_traitor(objet, retour, request, methode); //sinon
        
@@ -111,7 +116,7 @@ public class FrontServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
             requestDispatcher.forward(request,response);
         }
-        catch(Exception e){
+        catch(IOException | ServletException e){
             out.println(e.fillInStackTrace());
             out.print(e.getClass());
             out.println(e.getLocalizedMessage());

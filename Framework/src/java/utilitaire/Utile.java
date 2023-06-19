@@ -26,6 +26,21 @@ import org.xml.sax.SAXException;
  * @author fabien
  */
 public class Utile {
+    public static void setUserDataSession(Object objet, Method methode, HttpServletRequest request) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        if(methode.isAnnotationPresent(Session.class)){
+            String setterName = "setSession";
+            Enumeration<String> sessionsNames = request.getSession().getAttributeNames();
+            HashMap<String, Object> allSession = new HashMap<>();
+            while (sessionsNames.hasMoreElements()) {
+                String nextElement = sessionsNames.nextElement();
+                Object sessionObject = request.getSession().getAttribute(nextElement);
+                allSession.put(nextElement, sessionObject);
+            }
+            Method set = objet.getClass().getDeclaredMethod(setterName, HashMap.class);
+            set.invoke(objet, new HashMap<>());
+            set.invoke(objet, allSession);
+        }
+    }
 //fonction checkAutorisation
     public static void checkAuthorisation(Method methode, HttpSession session, String profileName)throws Exception{
         if(methode.getDeclaredAnnotation(MyAnnotation.class) != null){
@@ -95,6 +110,7 @@ public class Utile {
     }
 //fonction pour traiter les requête du type normal
     public static Object request_traitor(Object objet, Object retour, HttpServletRequest request, Method methode) throws Exception{
+        
         Enumeration<String> paramNames = request.getParameterNames();
         if(paramNames.hasMoreElements()){
             java.lang.Class[] paramtypesclasses = methode.getParameterTypes();

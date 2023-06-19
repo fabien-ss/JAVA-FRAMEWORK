@@ -23,5 +23,6 @@
         </form>
         <a href="get-emp">Afficher emp</a>
         <a href="login.jsp">Login</a
+        <a href="get-connected">get-connected</a>
     </body>
 </html>
