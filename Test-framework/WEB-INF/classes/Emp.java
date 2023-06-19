@@ -6,9 +6,11 @@
 package objet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import utilitaire.FileUpload;
 import utilitaire.ModelView;
 import utilitaire.MyAnnotation;
+import utilitaire.Session;
 
 @MyAnnotation(isSegleton = true)
 public final class Emp {
@@ -25,6 +27,17 @@ public final class Emp {
     String prenom;
     int numero;
     FileUpload photo;
+    
+    HashMap<String, Object> session = new HashMap<>();
+
+    public void setSession(HashMap<String, Object> session) {
+        this.session = session;
+    }
+
+    public HashMap<String, Object> getSession() {
+        return session;
+    }
+
 
     public FileUpload getPhoto() {
         return photo;
@@ -101,6 +114,15 @@ public final class Emp {
         ModelView m = new ModelView();
         m.setView("emp.jsp");
         m.addItem("emp", this);
+        return m;
+    }
+    
+    @Session
+    @MyAnnotation(url="get-connected", ParametersNames = {})
+    public ModelView getConnectedUser() {
+        ModelView m = new ModelView();
+        m.addItem("emp", this);
+        m.setView("empsdetails.jsp");
         return m;
     }
     
