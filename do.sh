@@ -35,6 +35,9 @@ mv etu2004Framework.war $chemin_webapps
 cd ..
 rm -r temp
 cd $chemin_bin
+
+echo "Tomcat RELOADING ...................."
+wait
 ./shutdown.sh
 ./startup.sh
 
