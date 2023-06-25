@@ -110,7 +110,6 @@ public class Utile {
     }
 //fonction pour traiter les requête du type normal
     public static Object request_traitor(Object objet, Object retour, HttpServletRequest request, Method methode) throws Exception{
-        
         Enumeration<String> paramNames = request.getParameterNames();
         if(paramNames.hasMoreElements()){
             java.lang.Class[] paramtypesclasses = methode.getParameterTypes();
@@ -150,6 +149,7 @@ public class Utile {
                     InputStream inputStream = filePart.getInputStream();
                     byte[] fileBytes = inputStream.readAllBytes();
                     String imageDirectory = "./";
+                    
                     FileUpload file = new FileUpload();
                     file.setBytes(fileBytes);
                     file.setName(part.getSubmittedFileName());

@@ -14,6 +14,7 @@ import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyAnnotation {
+    public boolean restApi() default false;
     public boolean isSegleton() default false;
     public String url() default"";
     public String aunth() default "";

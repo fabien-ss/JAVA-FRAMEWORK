@@ -6,6 +6,5 @@ cd $class_path
 jar -cf etu2004Files.jar .
 mv etu2004Files.jar $librairies_path
 cd $test_class_path
-javac -cp ../lib/* -d . *java
-
-  
+ls ../lib
+javac -cp "../lib/*" -d . *java

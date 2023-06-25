@@ -16,6 +16,15 @@ public class ModelView {
     String View = "index.jsp";
     HashMap<String, Object> data = new HashMap<>();
     HashMap<String, Object> sessions = new HashMap<>();
+    boolean isJSON = false;
+
+    public boolean isIsJSON() {
+        return isJSON;
+    }
+
+    public void setIsJSON(boolean isJSON) {
+        this.isJSON = isJSON;
+    }
 
     public void addSession(String key, Object value){
         this.getSessions().put(key, value);
@@ -32,6 +41,7 @@ public class ModelView {
     public void addItem(String key, Object data) {
         this.getData().put(key, data);
     }
+    
     public void setData(HashMap<String, Object> data) {
         this.data = data;
     }

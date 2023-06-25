@@ -5,6 +5,8 @@
  */
 package objet;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import utilitaire.FileUpload;
@@ -16,18 +18,18 @@ import utilitaire.Session;
 public final class Emp {
     
     int nombredappel = 0;
-    public void setNombredappel(int i){
-        this.nombredappel = i;
-    }
-    public int getNombredappel(){
-        return this.nombredappel;
-    }
     int id;
     String nom;
     String prenom;
     int numero;
     FileUpload photo;
     
+    public void setNombredappel(int i){
+        this.nombredappel = i;
+    }
+    public int getNombredappel(){
+        return this.nombredappel;
+    }
     HashMap<String, Object> session = new HashMap<>();
 
     public void setSession(HashMap<String, Object> session) {
@@ -123,6 +125,14 @@ public final class Emp {
         ModelView m = new ModelView();
         m.addItem("emp", this);
         m.setView("empsdetails.jsp");
+        return m;
+    }
+
+    @MyAnnotation(url="etudiant", ParametersNames = {})
+    public ModelView numero(){
+        ModelView m = new ModelView();
+        m.setIsJSON(true);
+        m.addItem("emp", new Emp(2, "Jean", "Koto balida", 002));
         return m;
     }
     

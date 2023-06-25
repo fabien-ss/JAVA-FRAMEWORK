@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <h1>Bonjour</h1>
         <form action="add-emp" method="post" enctype="multipart/form-data">
             Entrer votre nom: <input type="text" name="nom" value="u">
             <br>
@@ -21,8 +22,11 @@
             <input type="file" name="photo">
             <input type="submit" value="Valider">
         </form>
+        <a href="etudiant?">Etudiant</a>
         <a href="get-emp">Afficher emp</a>
         <a href="login.jsp">Login</a>
         <a href="get-connected">get-connected</a>
+        <a href="etudiant">get-connected</a>
+        <a href="testApi">Test api</a>
     </body>
 </html>
