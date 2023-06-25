@@ -13,6 +13,7 @@ import utilitaire.FileUpload;
 import utilitaire.ModelView;
 import utilitaire.MyAnnotation;
 import utilitaire.Session;
+import utilitaire.restApi;
 
 @MyAnnotation(isSegleton = true)
 public final class Emp {
@@ -126,6 +127,12 @@ public final class Emp {
         m.addItem("emp", this);
         m.setView("empsdetails.jsp");
         return m;
+    }
+
+    @restApi
+    @MyAnnotation(url="testApi", ParametersNames = {})
+    public Emp numeroByAnnoation(){
+        return new Emp(2, "Jean", "Koto balida", 002);
     }
 
     @MyAnnotation(url="etudiant", ParametersNames = {})
