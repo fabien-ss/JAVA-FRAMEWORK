@@ -128,7 +128,7 @@ public class Utile {
             }
         }
         else{
-            retour = (ModelView) methode.invoke(objet);
+            retour = methode.invoke(objet);
         }
         return retour;
     }
@@ -164,7 +164,7 @@ public class Utile {
             if(paramtypesclasses.length > 0) retour = Utile.setMethodsParameters(parametres, methode, objet);   
         }
         else {
-            retour = (ModelView) methode.invoke(objet);
+            retour = methode.invoke(objet);
         }
         return retour;
     }
