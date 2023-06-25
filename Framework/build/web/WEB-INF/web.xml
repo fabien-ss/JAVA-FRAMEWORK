@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <servlet>
+        <servlet-name>FrontServlet</servlet-name>
+        <servlet-class>etu2004.framework.servlet.FrontServlet</servlet-class>
+        <init-param>
+            <param-name>package_name</param-name>
+            <param-value>objet</param-value>
+        </init-param>
+        <init-param>
+            <param-name>session_name</param-name>
+            <param-value>isConnected</param-value>
+        </init-param>
+        <init-param>
+            <param-name>profil_name</param-name>
+            <param-value>profil</param-value>
+        </init-param>
+    </servlet>
+ 
+   <servlet-mapping>
+        <servlet-name>FrontServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+    <multipart-config>
+        <max-file-size>52428800</max-file-size> <!-- Taille maximale du fichier en octets -->
+        <max-request-size>52428800</max-request-size> <!-- Taille maximale de la requête en octets -->
+        <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
+
+</web-app>
