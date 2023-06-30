@@ -100,13 +100,14 @@ public class FrontServlet extends HttpServlet {
         
         String contentType = request.getContentType(); //obtient le type de la requête
         
-        
         Utile.checkAuthorisation(methode, session, profilName);
         
         //maka ny donnée anaty session pour une méthode contenant l'annotaion session, izany hoe méthode mila session
         Utile.setUserDataSession(objet, methode, request);
         
+        //ito le mitraiter hoe file sa tsy file
         if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode); //si c'est du type 'multipart/form-data'
+        //ito ndray le ze tina
         else if(contentType == null) retour = Utile.request_traitor(objet, retour, request, methode); //sinon
        
         if(!isRestMethode){

@@ -37,7 +37,7 @@ public class Utile {
                 allSession.put(nextElement, sessionObject);
             }
             Method set = objet.getClass().getDeclaredMethod(setterName, HashMap.class);
-            set.invoke(objet, new HashMap<>());
+           // set.invoke(objet, new HashMap<>()); tsy azoko intsony ito anh
             set.invoke(objet, allSession);
         }
     }
