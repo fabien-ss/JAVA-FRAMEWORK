@@ -17,8 +17,9 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <%=emp.getNombredappel()%>
-        <%=emp.getPrenom()%> <br>
+        Nombre d'appel <%=emp.getNombredappel()%>
+        <br>
+        Prénom/ Profil <%=emp.getPrenom()%> <br>
         Photo name <%=emp.getPhoto().getName()%><br>
         Byte <%=emp.getPhoto().getBytes()%>
     </body>

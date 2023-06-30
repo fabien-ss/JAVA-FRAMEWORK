@@ -5,8 +5,6 @@
  */
 package objet;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import utilitaire.FileUpload;
@@ -24,14 +22,16 @@ public final class Emp {
     String prenom;
     int numero;
     FileUpload photo;
+    HashMap<String, Object> session;
     
     public void setNombredappel(int i){
         this.nombredappel = i;
     }
+
     public int getNombredappel(){
         return this.nombredappel;
     }
-    HashMap<String, Object> session = new HashMap<>();
+
 
     public void setSession(HashMap<String, Object> session) {
         this.session = session;

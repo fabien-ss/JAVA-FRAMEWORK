@@ -14,7 +14,7 @@
     <body>
         <h1>Hello World!</h1>
         <form action="login" method="post" enctype="multipart/form-data">
-            <input type="text" name ="nom">
+            <input type="text" name ="nom"> <br>
             <input type="text" name="prenom">
             <input type="submit">
         </form>
