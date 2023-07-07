@@ -20,12 +20,21 @@
             <br><!-- comment -->
             Numero <input type="number" name="numero" value=111>
             <input type="file" name="photo">
+            <input type="checkbox" name="animals[]" value=1>
+            <input type="checkbox" name="animals[]" value=2>
             <input type="submit" value="Valider">
+        </form>
+        <br>
+        Delete session
+        <form action="deleteProfile" method="post" enctype="multipart/form-data">
+            <input type="text" name="profil">
+            <input type="submit">
         </form>
         <a href="get-emp">Afficher emp</a>
         <a href="login.jsp">S'authentifier</a>
         <a href="get-connected">Obtenir depuis session</a>
         <a href="etudiant">Test json modelview</a>
         <a href="testApi">Test json object</a>
+        <a href="disconnect">se déconnecter</a>
     </body>
 </html>

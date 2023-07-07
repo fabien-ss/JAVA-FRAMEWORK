@@ -22,5 +22,10 @@
         Prénom/ Profil <%=emp.getPrenom()%> <br>
         Photo name <%=emp.getPhoto().getName()%><br>
         Byte <%=emp.getPhoto().getBytes()%>
+        Animaux <%
+            for(int i : emp.getAnimals()){
+                out.println(i);
+            }
+        %>
     </body>
 </html>

@@ -34,10 +34,11 @@ public class Utile {
             while (sessionsNames.hasMoreElements()) {
                 String nextElement = sessionsNames.nextElement();
                 Object sessionObject = request.getSession().getAttribute(nextElement);
+                System.out.println(nextElement + sessionObject);
                 allSession.put(nextElement, sessionObject);
             }
             Method set = objet.getClass().getDeclaredMethod(setterName, HashMap.class);
-           // set.invoke(objet, new HashMap<>()); tsy azoko intsony ito anh
+            System.out.print(set);
             set.invoke(objet, allSession);
         }
     }
@@ -145,15 +146,14 @@ public class Utile {
                     parametres.put(fieldName, paramValues);
                 } else {
                     String fileName = part.getName();
-                    Part filePart = request.getPart(fileName);
-                    InputStream inputStream = filePart.getInputStream();
+                    InputStream inputStream = part.getInputStream();
                     byte[] fileBytes = inputStream.readAllBytes();
                     String imageDirectory = "./";
                     
                     FileUpload file = new FileUpload();
                     file.setBytes(fileBytes);
                     file.setName(part.getSubmittedFileName());
-                    file.setPath(imageDirectory+fileName);
+                    file.setPath(imageDirectory+part.getSubmittedFileName());
                     FileUpload[] fichiers = new FileUpload[1];
                     fichiers[0] = file;
                     parametres.put(fileName, fichiers);
@@ -185,6 +185,7 @@ public class Utile {
                         i += 1;
                     }
                     else if(params.length > 1){
+                        System.out.print("ouille");
                         int[] array_object_to_set = new int[params.length];
                         int j = 0;
                         for(Object p : params){
@@ -225,8 +226,10 @@ public class Utile {
             return Boolean.valueOf(value.toString());
         } else if (type.equals(char.class)) {
             return value.toString().charAt(0);
-        } else {
-            throw new IllegalArgumentException("Type non supporté : " + type.getName());
+        }
+        else {
+            return value;
+            //throw new IllegalArgumentException("Type non supporté : " + type.getName());
         }
     }
 //fonction pour obtenir le nom du setter ex: en entrée nom, sortie: setNom
@@ -272,6 +275,7 @@ public class Utile {
                     else if(field_type.equals(FileUpload.class)){
                         converted_value = value;
                     }
+                    
                     else if(field_type.equals(String.class)) {
                         converted_value = value;
                     } 
