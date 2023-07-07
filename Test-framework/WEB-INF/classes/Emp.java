@@ -23,6 +23,14 @@ public final class Emp {
     int numero;
     FileUpload photo;
     HashMap<String, Object> session;
+    int[] animals;
+
+    public void setAnimals(int[] animals) {
+        this.animals = animals;
+    }
+    public int[] getAnimals() {
+        return animals;
+    }
     
     public void setNombredappel(int i){
         this.nombredappel = i;
@@ -91,11 +99,32 @@ public final class Emp {
         this.setPrenom(prenom);
         this.setNumero(numero);
     }
+
+    @MyAnnotation(url="disconnect")
+    public ModelView disconnect(){
+        ModelView m = new ModelView();
+        m.setInvalidateSession(true);
+        m.setView("index.jsp");
+        return m;
+    }
+    
+    @MyAnnotation(url="deleteProfile", ParametersNames = {"profil"})
+    public ModelView deleteProfile(String profil){
+        ModelView m = new ModelView();
+        ArrayList<String> ses = new ArrayList<>();
+        ses.add(profil);
+        m.setSessionName(ses);
+        m.setView("index.jsp");
+        return m;
+    }
     @MyAnnotation(url="login", ParametersNames = {})
     public ModelView login(){
         ModelView m = new ModelView();
         m.addSession("isConnected", this);
+        m.addSession("", m);
         m.addSession("profil", this.getPrenom());
+        m.addSession("nom", this.nom);
+        m.addItem("prenom", this.prenom);
         m.setView("index.jsp");
         m.addItem("profi", this);
         return m;
@@ -112,10 +141,11 @@ public final class Emp {
         return m;
     }
     
-    @MyAnnotation(url="add-emp", ParametersNames = {})
-    public ModelView insert(){
+    @MyAnnotation(url="add-emp", ParametersNames = { "animals[]"})
+    public ModelView insert(int[] animals){
         ModelView m = new ModelView();
         m.setView("emp.jsp");
+        this.animals = animals;
         m.addItem("emp", this);
         return m;
     }
@@ -124,7 +154,9 @@ public final class Emp {
     @MyAnnotation(url="get-connected", ParametersNames = {})
     public ModelView getConnectedUser() {
         ModelView m = new ModelView();
-        m.addItem("emp", this);
+        m.addItem("profil", this.getSession().get("profil"));
+        m.addItem("emp", this.getSession().get("isConnected"));
+        m.addItem("nom", this.getSession().get("nom"));
         m.setView("empsdetails.jsp");
         return m;
     }
@@ -146,7 +178,7 @@ public final class Emp {
     @MyAnnotation(url="find-emp" , ParametersNames = { "id" }, aunth = "admin")
     public ModelView findById(int id){
         ModelView m = new ModelView();
-        m.setView("empsdetails.jsp");
+        m.setView("empFiche.jsp");
         
         ArrayList<Emp> emps = new ArrayList<>();
         emps.add(new Emp(1, "Koto", "Jean", 032));

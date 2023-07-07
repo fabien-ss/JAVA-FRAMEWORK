@@ -2,6 +2,7 @@ chemin_webapps="/home/fabien/Documents/apache-tomcat-9.0.76/webapps"
 chemin_bin="/home/fabien/Documents/apache-tomcat-9.0.76/bin"
 framework_dir="/home/fabien/Documents/GitHub/Framework"
 package_name="objet"
+applications_dir="Test-framework"
 
 echo "Création du répertoire temporaire"
 mkdir temp
@@ -17,14 +18,14 @@ cd ../..
 
 echo "Copie des fichiers jsp"
 
-cp Test-framework/*.jsp temp/
+cp $applications_dir/*.jsp temp/
 echo "Copie des fichiers de configuraiton"
-cp Test-framework/WEB-INF/web.xml temp/WEB-INF/
+cp $applications_dir/WEB-INF/web.xml temp/WEB-INF/
 echo "Copie de la librairie"
-cp Test-framework/WEB-INF/lib/* temp/WEB-INF/lib/
+cp $applications_dir/WEB-INF/lib/* temp/WEB-INF/lib/
 echo "Copie des classes"
 
-cp Test-framework/WEB-INF/classes/$package_name/*.class temp/WEB-INF/classes/$package_name/
+cp $applications_dir/WEB-INF/classes/$package_name/*.class temp/WEB-INF/classes/$package_name/
 rm test/WEB-INF/classes/*.java
 
 cd temp

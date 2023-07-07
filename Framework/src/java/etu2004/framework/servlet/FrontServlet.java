@@ -34,6 +34,7 @@ import utilitaire.restApi;
  *
  * @author fabien
  */
+
 @WebServlet
 @MultipartConfig(location = "./")
 public class FrontServlet extends HttpServlet {
@@ -83,6 +84,8 @@ public class FrontServlet extends HttpServlet {
             }
         }
         
+        Utile.resetAttributeToDefault(objet );
+        
         String method = (String) MappingUrls.get(nomMethode).getMethod();
         Method methode = null;
         Method[] methodes = objet.getClass().getDeclaredMethods();
@@ -106,28 +109,40 @@ public class FrontServlet extends HttpServlet {
         Utile.setUserDataSession(objet, methode, request);
         
         //ito le mitraiter hoe file sa tsy file
+        out.println("content "+contentType);
         if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode); //si c'est du type 'multipart/form-data'
         //ito ndray le ze tina
-        else if(contentType == null) retour = Utile.request_traitor(objet, retour, request, methode); //sinon
+        else retour = Utile.request_traitor(objet, retour, request, methode); //sinon
        
         if(!isRestMethode){
             //not a rest method
             ModelView m = (ModelView) retour;
+            if(m.isInvalidateSession()){
+                request.getSession().invalidate();
+            }
+            if(m.getSessionName().size() > 0){
+                for(String name : m.getSessionName()){
+                    session.removeAttribute(name);
+                }
+            }
             String key = "";
             //get key
             for (Map.Entry<String, Object> entry : m.getData().entrySet()) {
                 key = (String) entry.getKey();
+                request.setAttribute((String) key, m.getData().get(key));
             }
             if(m.getSessions().size() > 0){
-                session.setAttribute(this.sessionName, m.getSessions().get(this.sessionName));
-                session.setAttribute(this.profilName, m.getSessions().get(this.profilName));
+                for (Map.Entry<String, Object> entry : m.getSessions().entrySet()) {
+                    String cle = (String) entry.getKey();
+                    session.setAttribute(cle, m.getSessions().get(cle));
+                }
             }
             if(m.isIsJSON()){
                 String objectJsoned = this.gson.toJson(m.getData().get(key));
                 out.println(objectJsoned);
             }
-            else{
-                request.setAttribute((String) key, m.getData().get(key));
+            if(!m.isIsJSON()){
+                
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/"+((ModelView) retour).getView());
                 requestDispatcher.forward(request,response);
             }

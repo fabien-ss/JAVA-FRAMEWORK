@@ -4,8 +4,8 @@
  */
 package utilitaire;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
 /**
  *
  * @author fabien
@@ -16,8 +16,26 @@ public class ModelView {
     String View = "index.jsp";
     HashMap<String, Object> data = new HashMap<>();
     HashMap<String, Object> sessions = new HashMap<>();
+    ArrayList<String> sessionName = new ArrayList<>();
+    boolean invalidateSession = false;
     boolean isJSON = false;
 
+    public ArrayList<String> getSessionName() {
+        return sessionName;
+    }
+
+    public void setSessionName(ArrayList<String> sessionName) {
+        this.sessionName = sessionName;
+    }
+
+    public boolean isInvalidateSession() {
+        return invalidateSession;
+    }
+
+    public void setInvalidateSession(boolean invalidateSession) {
+        this.invalidateSession = invalidateSession;
+    }
+    
     public boolean isIsJSON() {
         return isJSON;
     }

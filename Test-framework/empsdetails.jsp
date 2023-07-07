@@ -7,7 +7,8 @@
 <%@page import="objet.Emp" contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    Emp emp = (Emp) request.getAttribute("emp");
+    String prof = (String) request.getAttribute("profil");
+    String nom = (String) request.getAttribute("nom");
 %>
 
 <!DOCTYPE html>
@@ -17,9 +18,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <td><%=emp.getNom()%></td>
-        <td><%=emp.getPrenom()%></td>
-        <td><%=emp.getNumero()%></td>
+        <h1>Hello World! <%=prof%>, ident = <%=nom%> </h1>
     </body>
 </html>
