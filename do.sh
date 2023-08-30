@@ -5,14 +5,17 @@ package_name="objet"
 applications_dir="Test-framework"
 
 echo "Création du répertoire temporaire"
-mkdir temp
+
+echo "tena tsy tiako ito editeur ito puisque ca me donne la nosee, je ne peux pas rester sur vscode plus longtemps, t'as vu la police qu'elle offre?"
+
+mkdir temp<
 cd temp
 mkdir WEB-INF
 cd WEB-INF
 mkdir classes
 cd classes 
 mkdir $package_name
-cd ..
+cd .. 
 mkdir lib
 cd ../..    
 

@@ -34,11 +34,11 @@ public class Utile {
             while (sessionsNames.hasMoreElements()) {
                 String nextElement = sessionsNames.nextElement();
                 Object sessionObject = request.getSession().getAttribute(nextElement);
-                System.out.println(nextElement + sessionObject);
+             
                 allSession.put(nextElement, sessionObject);
             }
             Method set = objet.getClass().getDeclaredMethod(setterName, HashMap.class);
-            System.out.print(set);
+            
             set.invoke(objet, allSession);
         }
     }
@@ -185,11 +185,9 @@ public class Utile {
                         i += 1;
                     }
                     else if(params.length > 1){
-                        System.out.print("ouille");
                         int[] array_object_to_set = new int[params.length];
                         int j = 0;
                         for(Object p : params){
-                            System.out.println("p: "+p);
                             array_object_to_set[j] = Integer.parseInt((String) p);//Utile.convertToPrimitive(p, int.class);
                             j += 1;
                         }
@@ -279,12 +277,18 @@ public class Utile {
                     else if(field_type.equals(String.class)) {
                         converted_value = value;
                     } 
-                    else if (field_type.equals(Date.class)) { //Si c'est une date mieux vaut le formatter
+                    else if (field_type.equals(java.sql.Timestamp.class)) { //Si c'est une date mieux vaut le formatter
                         try {
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                            Date parsedDate = dateFormat.parse((String) value);
-                            converted_value = new java.sql.Date(parsedDate.getTime());
+                            //String dateTimeString = "2023-07-19 15:30:45";
+                            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                            String datee = (String) value;
+                            datee += ":00";
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Date parsedDate = dateFormat.parse(datee.replace("T", " "));
+                            converted_value = new java.sql.Timestamp(parsedDate.getTime());
                         } catch (ParseException e) {
+                            
                             throw new IllegalArgumentException("Impossible de convertir la valeur en Date : " + value);
                         }
                     } else if (field_type.equals(LocalDate.class)) {
@@ -304,7 +308,6 @@ public class Utile {
         HashMap<String, Mapping> hash = new HashMap<>();
         List<Class<?>> classes = obtenirClasses(packageName);
         for (Class cls : classes) {
-            System.out.println("Class: " + cls.getName());
             Method[] methods = cls.getDeclaredMethods();
             for (Method method : methods) {
                if(method.getDeclaredAnnotation(MyAnnotation.class)!=null){

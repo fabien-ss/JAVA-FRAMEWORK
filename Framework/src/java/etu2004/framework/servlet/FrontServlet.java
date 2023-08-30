@@ -54,6 +54,8 @@ public class FrontServlet extends HttpServlet {
             this.profilName = getInitParameter("profil_name");
             this.sessionName = getInitParameter("session_name");
         } catch (Exception ex) {
+            ex.printStackTrace();
+            ex.getCause();
             Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -71,7 +73,13 @@ public class FrontServlet extends HttpServlet {
         String context = request.getContextPath();
         String nomMethode = uri.substring(context.length()+1);
         String packageName = getInitParameter("package_name");       
-        String nomDeClasse = packageName+"."+(String) MappingUrls.get(nomMethode).getClassName();
+        String nomDeClasse = "";
+        try{
+           nomDeClasse = packageName+"."+(String) MappingUrls.get(nomMethode).getClassName();
+        }
+        catch(Exception dcsde){
+            throw new Exception("url invalide");
+        }
         Class cl = java.lang.Class.forName(nomDeClasse);
         
         Object objet = instance_list.get(nomDeClasse);
@@ -97,6 +105,8 @@ public class FrontServlet extends HttpServlet {
             }
         }
         
+        
+        
         if(methode.getDeclaredAnnotation(restApi.class) != null) isRestMethode = true;
         
         Object retour = new Object(); //instance à l'objet servant de modelview 
@@ -108,8 +118,6 @@ public class FrontServlet extends HttpServlet {
         //maka ny donnée anaty session pour une méthode contenant l'annotaion session, izany hoe méthode mila session
         Utile.setUserDataSession(objet, methode, request);
         
-        //ito le mitraiter hoe file sa tsy file
-        out.println("content "+contentType);
         if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode); //si c'est du type 'multipart/form-data'
         //ito ndray le ze tina
         else retour = Utile.request_traitor(objet, retour, request, methode); //sinon
@@ -161,9 +169,11 @@ public class FrontServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException | SAXException | ParserConfigurationException ex) {
-               out.println(ex);
+            ex.getCause();   
+            ex.printStackTrace();
         } catch (Exception ex) {
-            out.println(ex);
+            ex.getCause();
+            ex.printStackTrace();
         }
     }
 
@@ -182,11 +192,14 @@ public class FrontServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
-           out.println(ex);
+            ex.getCause();
+           ex.printStackTrace();
         } catch (SAXException | ParserConfigurationException ex) {
-            out.println(ex);
+            ex.getCause();
+            ex.printStackTrace();
         } catch (Exception ex) {
-            out.println(ex);
+            ex.getCause();
+            ex.printStackTrace();
         }
     }
 
