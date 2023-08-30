@@ -1,6 +1,6 @@
 # Framework ETU002004
 ## Framework java
 ### Requirements
-#### Tomcat 9 or higher
-### Clone the repository
-#### Change path of your tomcat and your project in do.sh and run.sh
+Tomcat 9 or higher, java 8 or higher. 
+### Installation
+Just clone the repository and replace the path in do.sh and run.sh by your own path.
