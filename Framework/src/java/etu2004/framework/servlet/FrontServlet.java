@@ -49,8 +49,8 @@ public class FrontServlet extends HttpServlet {
     public void init() throws ServletException {
         try {      
             String packageName = getInitParameter("package_name");
-            setMappingUrls(Utile.getAllHashMap(packageName));
-            setInstance_list(Utile.getAllSengletonClasses(packageName));
+            this.setMappingUrls(Utile.getAllHashMap(packageName));
+            this.setInstance_list(Utile.getAllSengletonClasses(packageName));
             this.profilName = getInitParameter("profil_name");
             this.sessionName = getInitParameter("session_name");
         } catch (Exception ex) {
