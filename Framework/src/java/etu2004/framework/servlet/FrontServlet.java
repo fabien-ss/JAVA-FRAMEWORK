@@ -55,8 +55,6 @@ public class FrontServlet extends HttpServlet {
             this.sessionName = getInitParameter("session_name");
         } catch (Exception ex) {
             ex.printStackTrace();
-            ex.getCause();
-            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
      
@@ -158,11 +156,7 @@ public class FrontServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             processRequest(request, response);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException | SAXException | ParserConfigurationException ex) {
-            ex.getCause();   
-            ex.printStackTrace();
-        } catch (Exception ex) {a
-            ex.getCause();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -181,14 +175,7 @@ public class FrontServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             processRequest(request, response);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
-            ex.getCause();
-           ex.printStackTrace();
-        } catch (SAXException | ParserConfigurationException ex) {
-            ex.getCause();
-            ex.printStackTrace();
         } catch (Exception ex) {
-            ex.getCause();
             ex.printStackTrace();
         }
     }
