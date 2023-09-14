@@ -49,52 +49,47 @@ public class FrontServlet extends HttpServlet {
     public void init() throws ServletException {
         try {      
             String packageName = getInitParameter("package_name");
-            setMappingUrls(Utile.getAllHashMap(packageName));
-            setInstance_list(Utile.getAllSengletonClasses(packageName));
+            this.setMappingUrls(Utile.getAllHashMap(packageName));
+            this.setInstance_list(Utile.getAllSengletonClasses(packageName));
             this.profilName = getInitParameter("profil_name");
             this.sessionName = getInitParameter("session_name");
         } catch (Exception ex) {
             ex.printStackTrace();
-            ex.getCause();
-            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
      
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=UTF-8");
         
-        boolean isRestMethode = false;
-        
-        PrintWriter out = response.getWriter();
-        
-        HttpSession session = request.getSession();
-
+        boolean isRestMethode = false;  
+        PrintWriter out = response.getWriter();     
+        HttpSession session = request.getSession();
         String uri = request.getRequestURI();
         String context = request.getContextPath();
         String nomMethode = uri.substring(context.length()+1);
         String packageName = getInitParameter("package_name");       
         String nomDeClasse = "";
-        try{
+
+        try{ // Test si l'URL correspond à une des méthodes
            nomDeClasse = packageName+"."+(String) MappingUrls.get(nomMethode).getClassName();
         }
-        catch(Exception dcsde){
-            throw new Exception("url invalide");
+        catch(Exception invalidateUrlException){ // ici l'URL ne correspond pas 
+            throw new Exception("404 url invalide");
         }
-        Class cl = java.lang.Class.forName(nomDeClasse);
-        
+
+        Class class = java.lang.Class.forName(nomDeClasse);
         Object objet = instance_list.get(nomDeClasse);
         
         if(objet == null){
-            objet = cl.newInstance();
+            objet = class.newInstance();
             MyAnnotation annotation = (MyAnnotation) cl.getDeclaredAnnotation(MyAnnotation.class);
             if(annotation.isSegleton()){
                 instance_list.put(nomDeClasse, objet);
             }
         }
         
-        Utile.resetAttributeToDefault(objet );
-        
-        String method = (String) MappingUrls.get(nomMethode).getMethod();
+        Utile.resetAttributeToDefault(objet ); // reset attributs value to default
+        String method = (String) MappingUrls.get(nomMethode).getMethod(); // cet the method matching with the url
         Method methode = null;
         Method[] methodes = objet.getClass().getDeclaredMethods();
         
@@ -104,24 +99,17 @@ public class FrontServlet extends HttpServlet {
                 break;
             }
         }
-        
-        
-        
-        if(methode.getDeclaredAnnotation(restApi.class) != null) isRestMethode = true;
-        
+                   
+        if(methode.getDeclaredAnnotation(restApi.class) != null) isRestMethode = true; // Si c'est rest Api
         Object retour = new Object(); //instance à l'objet servant de modelview 
-        
-        String contentType = request.getContentType(); //obtient le type de la requête
-        
+        String contentType = request.getContentType(); //obtient le type de la requête    
         Utile.checkAuthorisation(methode, session, profilName);
-        
         //maka ny donnée anaty session pour une méthode contenant l'annotaion session, izany hoe méthode mila session
-        Utile.setUserDataSession(objet, methode, request);
-        
+       Utile.setUserDataSession(objet, methode, request);       
         if(contentType != null) retour = Utile.request_multipart_traitor(objet, retour, request, methode); //si c'est du type 'multipart/form-data'
         //ito ndray le ze tina
-        else retour = Utile.request_traitor(objet, retour, request, methode); //sinon
-       
+        else if(contentType == nulle) retour = Utile.request_traitor(objet, retour, request, methode); //sinon
+      
         if(!isRestMethode){
             //not a rest method
             ModelView m = (ModelView) retour;
@@ -168,11 +156,7 @@ public class FrontServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             processRequest(request, response);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException | SAXException | ParserConfigurationException ex) {
-            ex.getCause();   
-            ex.printStackTrace();
         } catch (Exception ex) {
-            ex.getCause();
             ex.printStackTrace();
         }
     }
@@ -191,14 +175,7 @@ public class FrontServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             processRequest(request, response);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException ex) {
-            ex.getCause();
-           ex.printStackTrace();
-        } catch (SAXException | ParserConfigurationException ex) {
-            ex.getCause();
-            ex.printStackTrace();
         } catch (Exception ex) {
-            ex.getCause();
             ex.printStackTrace();
         }
     }
