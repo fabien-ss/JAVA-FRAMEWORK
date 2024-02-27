@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Chemins et variables
+chemin_webapps="/home/fabien/Documents/apache-tomcat-9.0.76/webapps"
+applications_dir="/home/fabien/Documents/GitHub/Framework/Test-framework"
+temp_dir="/tmp/etu2004Framework"
+
+# Création du répertoire temporaire
+mkdir -p "$temp_dir/WEB-INF/classes/objet" "$temp_dir/WEB-INF/lib"
+cp "$applications_dir"/*.jsp "$applications_dir/WEB-INF/web.xml" "$temp_dir/"
+cp "$applications_dir/WEB-INF/lib/"* "$temp_dir/WEB-INF/lib/"
+cp "$applications_dir/WEB-INF/classes/objet"/*.class "$temp_dir/WEB-INF/classes/objet/"
+rm "$temp_dir/WEB-INF/classes/objet"/*.java
+
+# Création de l'archive WAR
+jar -cvf "$temp_dir/etu2004Framework.war" -C "$temp_dir" .
+
+# Déplacement de l'archive WAR vers webapps
+mv "$temp_dir/etu2004Framework.war" "$chemin_webapps/"
+
+# Nettoyage
+rm -rf "$temp_dir"
+
+# Redémarrage de Tomcat
+"$chemin_webapps/../bin/shutdown.sh"
+"$chemin_webapps/../bin/startup.sh"
